@@ -20,3 +20,21 @@ function raw_u($value='') {
 function h($value='') {
 	return htmlspecialchars($value);
 }
+
+function error_404() {
+	error("404 Not found");
+}
+
+function error_500() {
+	error("500 Internal Server Error");
+}
+
+function error($value='') {
+	header($_SERVER["SERVER_PROTOCOL"] . " {$value}");
+	exit();
+}
+
+function redirect_to($location) {
+	header("Location: " . url_for($location));
+	exit;
+}
