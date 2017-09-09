@@ -4,17 +4,10 @@ $PRIVATE_PATH='../../../private/';
 
 require_once $PRIVATE_PATH . 'initialize.php'; 
 
-$test = $_GET['test'] ?? '';
+$subject = [];
+$subject_count = subjects_count() + 1;
+$subject['position'] = $subject_count;
 
-if($test == '404') {
-  error_404();
-} elseif($test == '500') {
-  error_500();
-} elseif ($test == 'redirect') {
-	redirect_to('/staff/subjects/index.php');
-} else {
-  echo 'No error';
-}
 ?>
 <?php $page_title = 'Create Subject'; ?>
 <?php include(SHARED_PATH . '/staff_header.php'); ?>
@@ -35,8 +28,16 @@ if($test == '404') {
         <dt>Position</dt>
         <dd>
           <select name="position">
-            <option value="1">1</option>
-          </select>
+            <?php
+              for($i=1; $i <= $subject_count; $i++) {
+                echo "<option value=\"{$i}\"";
+                if($subject["position"] == $i) {
+                  echo " selected";
+                }
+                echo ">{$i}</option>";
+              }
+            ?>
+            </select>
         </dd>
       </dl>
       <dl>

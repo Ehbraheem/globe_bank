@@ -3,19 +3,18 @@
 $PRIVATE_PATH='../../../private/';
 
 require_once $PRIVATE_PATH . 'initialize.php';
+require_once PUBLIC_PATH . '/staff/subjects/form_processor.php';
 
 if (is_post_request()) {
 
 	//  Handle form values sent by new.php
 
-	$menu_name = $_PORT['menu_name'] ?? '';
-	$position = $_PORT['position'] ?? '';
-	$visible = $_PORT['visible'] ?? '';
+	$subject = make_subject();
 
-	echo "Form parameters<br />";
-	echo "Menu name: " . $menu_name . "<br />";
-	echo "Position: " . $position . "<br />";
-	echo "Visible: " . $position . "<br />";
+	$result =  insert_subject($subject);
+	$new_id = mysqli_insert_id($db);
+	redirect_to("/staff/subjects/show.php?id=" . $new_id);
+	
 } else {
 	redirect_to('/staff/subjects/new.php');
 }
