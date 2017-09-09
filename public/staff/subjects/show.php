@@ -1,4 +1,6 @@
-<?php require_once('../../../private/initialize.php'); ?>
+<?php $PRIVATE_PATH='../../../private/' ?>
+
+<?php require_once $PRIVATE_PATH . 'initialize.php'; ?>
 
 <?php
 // $id = isset($_GET['id']) ? $_GET['id'] : '1';
