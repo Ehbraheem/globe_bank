@@ -38,18 +38,38 @@ function find($table, $id='') {
 }
 
 function insert_subject($subject) {
+	$errors = validate_subject($subject);
+	if (!empty($errors)) {
+		return $errors;
+	}
+
 	return insert($subject, "subjects");
 }
 
 function insert_page($page) {
+	$errors = validate_page($page);
+	if (!empty($errors)) {
+		return $errors;
+	}
+
 	return insert($page, "pages");
 }
 
 function update_subject($subject) {
+	$errors = validate_subject($subject);
+	if (!empty($errors)) {
+		return $errors;
+	}
+
   return update($subject, "subjects");
 }
 
 function update_page($page) {
+	$errors = validate_page($page);
+	if (!empty($errors)) {
+		return $errors;
+	}
+
   return update($page, "pages");
 }
 
@@ -163,7 +183,6 @@ function delete($table, $id) {
 		db_disconnect($db);
 		exit;
 	}
-	
 }
 
 function delete_stmt($table, $id) {
@@ -172,4 +191,66 @@ function delete_stmt($table, $id) {
   $sql .= "LIMIT 1";
 
   return $sql;
+}
+
+function validate($object) {
+
+	$errors = [];
+
+	// menu_name
+	if (is_blank($object['menu_name'])) {
+		$errors[] = "Name cannot be blank.";
+	} elseif (!has_length($object['menu_name'], ['min' => 2, 'max' => 255])) {
+		$errors[] = "Name must be between 2 and 255 characters.";
+	}
+
+	// position
+	// Makes sure we are working with an integer
+	$position_int = (int) $object['position'];
+	if ($position_int <= 0 || !$position_int) {
+		$errors[] = "Position must be greater than zero.";
+	}
+	if ($position_int > 999 || !$position_int) {
+		$errors[] = "Position must be less than 999.";
+	}
+
+	// visible
+	// Make sure we are working with a string
+	$visible_str = (string) $object['visible'];
+	if (!has_inclusion_of($visible_str, ["0", "1"])) {
+		$errors[] = "Visible must be true or false.";
+	}
+
+	return $errors;
+}
+
+function validate_subject($subject) {
+	$errors = validate($subject);
+
+	$current_id = $subject['id'] ?? "0";
+  if (!has_unique_menu_name("subjects", $subject['menu_name'], $current_id)) {
+  	$errors[] = "Menu name must be unique.";
+  }
+
+  return $errors;
+}
+
+function validate_page($page) {
+	$errors = validate($page);
+
+	// content
+  if(is_blank($page['content'])) {
+    $errors[] = "Content cannot be blank.";
+  }
+
+	if(is_blank($page['subject_id'])) {
+    $errors[] = "Subject cannot be blank.";
+  }
+
+  $current_id = $page['id'] ?? "0";
+  if (!has_unique_menu_name("pages", $page['menu_name'], $current_id)) {
+  	$errors[] = "Menu name must be unique.";
+  }
+
+	return $errors;
 }

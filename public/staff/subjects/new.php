@@ -3,6 +3,28 @@
 $PRIVATE_PATH='../../../private/';
 
 require_once $PRIVATE_PATH . 'initialize.php'; 
+require_once PUBLIC_PATH . '/staff/subjects/form_processor.php';
+
+if (is_post_request()) {
+
+  //  Handle form values sent by new.php
+
+  $subject = make_subject();
+
+  $result =  insert_subject($subject);
+
+  if ($result === true) {
+    $new_id = mysqli_insert_id($db);
+    redirect_to("/staff/subjects/show.php?id=" . $new_id);
+  } else {
+    $errors = $result;
+    // var_dump($errors);
+  }
+  
+  
+} else {
+  
+}
 
 $subject = [];
 $subject_count = subjects_count() + 1;
@@ -19,7 +41,9 @@ $subject['position'] = $subject_count;
   <div class="subject new">
     <h1>Create Subject</h1>
 
-    <form action="<?php echo url_for('/staff/subjects/create.php'); ?>" method="post">
+    <?php echo display_errors($errors); ?>
+
+    <form action="<?php echo url_for('/staff/subjects/new.php'); ?>" method="post">
       <dl>
         <dt>Menu Name</dt>
         <dd><input type="text" name="menu_name" value="" /></dd>

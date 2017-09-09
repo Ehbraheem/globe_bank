@@ -16,13 +16,21 @@ if(is_post_request()) {
   // Handle form values sent by new.php
   $page = make_page();
   $result = update_page($page);
-  redirect_to('/staff/pages/show.php?id=' . $id);
+  if ($result === true) {
+    redirect_to('/staff/pages/show.php?id=' . $id);
+  } else {
+    $errors = $result;
+    // var_dump($errors);
+  }
+  
 } else {
 
   $page = find_page_by_id($id);
-  $page_count = pages_count();
+
 
 }
+
+$page_count = pages_count();
 
 $page_title = 'Edit Page';
 include(SHARED_PATH . '/staff_header.php'); 
@@ -34,6 +42,8 @@ include(SHARED_PATH . '/staff_header.php');
 
   <div class="page new">
     <h1>Edit Page</h1>
+
+    <?php echo display_errors($errors); ?>
 
     <form action="<?php echo url_for('/staff/pages/edit.php?id=' . h(u($id))); ?>" method="post">
       <dl>

@@ -9,20 +9,28 @@ if(is_post_request()) {
   // Handle form values sent by new.php
   $page = make_page();
   $result = insert_page($page);
-  $new_id = mysqli_insert_id($db);
-  redirect_to("/staff/pages/show.php?id=" . $new_id);
+  if ($result === true) {
+    $new_id = mysqli_insert_id($db);
+    redirect_to("/staff/pages/show.php?id=" . $new_id);
+  } else {
+    $errors = $result;
+    // var_dump($errors);
+  }
+  
 } else {
-  $page = [];
-  $page['subject_id'] = '';
-  $page['menu_name'] = '';
-  $page['position'] = '';
-  $page['visible'] = '';
-  $page['content'] = '';
+  
+}
 
-  $page['position'] = $page_count = pages_count() + 1;
+$page = [];
+$page['subject_id'] = '';
+$page['menu_name'] = '';
+$page['position'] = '';
+$page['visible'] = '';
+$page['content'] = '';
+
+$page['position'] = $page_count = pages_count() + 1;
    
 $visible = '';
-}
 
 $page_title = 'Create Page';
 include(SHARED_PATH . '/staff_header.php');
@@ -34,6 +42,8 @@ include(SHARED_PATH . '/staff_header.php');
 
   <div class="page new">
     <h1>Create Page</h1>
+
+    <?php echo display_errors($errors); ?>
 
     <form action="<?php echo url_for('/staff/pages/new.php'); ?>" method="post">
       <dl>
