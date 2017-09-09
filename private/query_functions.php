@@ -30,7 +30,7 @@ function fetch_single($table, $id='') {
 function find($table, $id='') {
 	global $db;
 	$sql = "SELECT * FROM {$table} ";
-	$sql .= $id === '' ? "" : "WHERE id='{$id}' ";
+	$sql .= $id === '' ? "" : "WHERE id='" . db_escape($db, $id) . "' ";
 	$sql .= "ORDER BY position ASC";
 	$result = mysqli_query($db, $sql);
 	confirm_result_set($result);
@@ -118,9 +118,10 @@ function update($entries, $table) {
 }
 
 function construct_create_column($entries) {
+	global $db;
 	$values = $columns = [];
 	foreach ($entries as $key => $value) {
-		$values[] = "'" . $value . "'";
+		$values[] = "'" . db_escape($db,$value) . "'";
 		$columns[] =  $key;
 	}
 	return [$values, $columns];
@@ -139,6 +140,7 @@ function construct_create_stmt($entries, $table) {
 }
 
 function construct_update_columns($entries) {
+	global $db;
 	$values = [];
 	$id = "";
 	foreach ($entries as $key => $value) {
@@ -146,7 +148,7 @@ function construct_update_columns($entries) {
 			$id = $value;
 			continue;
 		}
-		$values[] = " {$key} = '" . $value . "'";
+		$values[] = " {$key} = '" . db_escape($db, $value) . "'";
 	}
 	$values = implode(',', $values);
 	$values .= " WHERE id='" . $id . "' ";
@@ -186,8 +188,9 @@ function delete($table, $id) {
 }
 
 function delete_stmt($table, $id) {
+	global $db;
 	$sql = "DELETE FROM {$table} ";
-  $sql .= "WHERE id='" . $id . "' ";
+  $sql .= "WHERE id='" . db_escape($db, $id) . "' ";
   $sql .= "LIMIT 1";
 
   return $sql;

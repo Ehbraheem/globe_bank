@@ -101,8 +101,8 @@ function has_valid_email_format($value) {
     global $db;
 
     $sql = "SELECT * FROM {$table} ";
-    $sql .= "WHERE menu_name='" . $menu_name . "' ";
-    $sql .= "AND id != '" . $current_id . "'";
+    $sql .= "WHERE menu_name='" . db_escape($db, $menu_name) . "' ";
+    $sql .= "AND id != '" . db_escape($db, $current_id) . "'";
 
     $page_set = mysqli_query($db, $sql);
     $page_count = mysqli_num_rows($page_set);
