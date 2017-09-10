@@ -20,6 +20,10 @@ function find_page_by_id($id) {
 	return fetch_single("pages", $id);
 }
 
+function find_pages_by_subject_id($value) {
+	return find_by("pages", "subject_id", $value);
+}
+
 function fetch_single($table, $id='') {
 	$result = find($table, $id);
 	$data = mysqli_fetch_assoc($result);
@@ -28,9 +32,13 @@ function fetch_single($table, $id='') {
 }
 
 function find($table, $id='') {
+	return find_by($table, "id", $id);
+}
+
+function find_by($table, $column, $id) {
 	global $db;
 	$sql = "SELECT * FROM {$table} ";
-	$sql .= $id === '' ? "" : "WHERE id='" . db_escape($db, $id) . "' ";
+	$sql .= $id === '' ? "" : "WHERE {$column}='" . db_escape($db, $id) . "' ";
 	$sql .= "ORDER BY position ASC";
 	$result = mysqli_query($db, $sql);
 	confirm_result_set($result);
