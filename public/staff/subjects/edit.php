@@ -1,8 +1,8 @@
 <?php 
 $PRIVATE_PATH='../../../private/';
-require_login();
 
 require_once $PRIVATE_PATH . 'initialize.php';
+require_login();
 require_once PUBLIC_PATH . '/staff/subjects/form_processor.php';
 
 if(!isset($_GET['id'])) {
@@ -14,8 +14,7 @@ if (is_post_request()) {
 
   //  Handle form values sent by new.php
 
-  $subject = make_subject();
-  
+  $subject = make_subject($id);
 
   $result = update_subject($subject);
   if ($result === true) {

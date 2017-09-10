@@ -131,7 +131,7 @@ dd {
 
 /* Session Messages */
 
-#message {
+div#message {
   color: #0055DD;
   background: white;
   border: 2px solid #0055DD;

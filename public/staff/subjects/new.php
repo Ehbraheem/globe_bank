@@ -1,9 +1,9 @@
 <?php
 
-$PRIVATE_PATH='../../../private/';
-require_login();
+$PRIVATE_PATH='../../../private/';;
 
 require_once $PRIVATE_PATH . 'initialize.php'; 
+require_login();
 require_once PUBLIC_PATH . '/staff/subjects/form_processor.php';
 
 if (is_post_request()) {

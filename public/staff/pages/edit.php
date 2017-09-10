@@ -1,8 +1,8 @@
 <?php 
 $PRIVATE_PATH='../../../private/';
-require_login();
 
 require_once $PRIVATE_PATH . 'initialize.php';
+require_login();
 require_once PUBLIC_PATH . '/staff/pages/form_processor.php';
 
 if(!isset($_GET['id'])) {
@@ -15,7 +15,7 @@ $id = $_GET['id'];
 if(is_post_request()) {
 
   // Handle form values sent by new.php
-  $page = make_page();
+  $page = make_page($id);
   $result = update_page($page);
   if ($result === true) {
     $_SESSION['status'] = "The Page was updated Successfully.";
@@ -32,7 +32,7 @@ if(is_post_request()) {
 
 }
 
-$page_count = pages_count();
+$page_count = count_pages_by_subject_id(['subject_id'=>$page['subject_id']]);
 
 $page_title = 'Edit Page';
 include(SHARED_PATH . '/staff_header.php'); 
@@ -40,7 +40,7 @@ include(SHARED_PATH . '/staff_header.php');
 
 <div id="content">
 
-  <a class="back-link" href="<?php echo url_for('/staff/pages/index.php'); ?>">&laquo; Back to List</a>
+  <a class="back-link" href="<?php echo url_for('/staff/subjects/show.php?id=' . h(u($page['subject_id']))); ?>">&laquo; Back to Subject</a>
 
   <div class="page new">
     <h1>Edit Page</h1>
