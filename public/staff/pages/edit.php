@@ -17,6 +17,7 @@ if(is_post_request()) {
   $page = make_page();
   $result = update_page($page);
   if ($result === true) {
+    $_SESSION['status'] = "The Page was updated Successfully.";
     redirect_to('/staff/pages/show.php?id=' . $id);
   } else {
     $errors = $result;

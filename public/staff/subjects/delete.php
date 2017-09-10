@@ -12,6 +12,7 @@ $subject = find_subject_by_id($id);
 if(is_post_request()) {
   
   $result = delete_subject($id);
+  $_SESSION['status'] = "The Subject was deleted Successfully.";
   redirect_to('/staff/subjects/index.php');
 }
 

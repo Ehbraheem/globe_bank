@@ -12,6 +12,7 @@ $page = find_page_by_id($id);
 if(is_post_request()) {
   
   $result = delete_page($id);
+  $_SESSION['status'] = "The Page was deleted Successfully.";
   redirect_to('/staff/pages/index.php');
 }
 
