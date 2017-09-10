@@ -4,7 +4,7 @@
 // $id = isset($_GET['id']) ? $_GET['id'] : '1';
 $id = $_GET['id'] ?? '1'; // PHP > 7.0
 
-$page = find_page_by_id($id)
+$page = find_page_by_id(['id' => $id]);
 
 ?>
 
@@ -17,8 +17,13 @@ $page = find_page_by_id($id)
 
   <div class="page show">
 
+    <div class="actions">
+      <a class="action" href="<?php echo url_for('/index.php?id=' . h(u($page['id']))) .
+      '&preview=true'); ?>" target="_blank">Preview</a>
+    </div>
+
     <div class="attributes">
-      <?php $subject = find_subject_by_id($page['subject_id']); ?>
+      <?php $subject = find_subject_by_id(['id' => $page['subject_id']]); ?>
       <dl>
         <dt>Subject</dt>
         <dd><?php echo h($subject['menu_name']); ?></dd>

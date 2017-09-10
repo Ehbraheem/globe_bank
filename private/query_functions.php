@@ -1,44 +1,45 @@
 <?php
 
-function find_all($table) {
-	return find($table);
+function find_all($table, $options=[]) {
+	return find($table, $options);
 }
 
-function find_all_subjects() {
-	return find_all("subjects");
+function find_all_subjects($options=[]) {
+	return find_all("subjects", $options);
 }
 
-function find_all_pages() {
-	return find_all("pages");
+function find_all_pages($options=[]) {
+	return find_all("pages", $options);
 }
 
-function find_subject_by_id($id) {
-	return fetch_single("subjects", $id);
+function find_subject_by_id($options=[]) {
+	return fetch_single("subjects", $options);
 }
 
-function find_page_by_id($id) {
-	return fetch_single("pages", $id);
+function find_page_by_id($options=[]) {
+	return fetch_single("pages", $options);
 }
 
-function find_pages_by_subject_id($value) {
-	return find_by("pages", "subject_id", $value);
+function find_pages_by_subject_id($options) {
+	return find_by("pages", $options);
 }
 
-function fetch_single($table, $id='') {
-	$result = find($table, $id);
+function fetch_single($table, $options) {
+	$result = find($table, $options);
 	$data = mysqli_fetch_assoc($result);
 	mysqli_free_result($result);
 	return $data;
 }
 
-function find($table, $id='') {
-	return find_by($table, "id", $id);
+function find($table, $options=[]) {
+	return find_by($table, $options);
 }
 
-function find_by($table, $column, $id) {
+function find_by($table, $options) {
 	global $db;
+	$query = $options ? construct_find_stmt($options) : "";
 	$sql = "SELECT * FROM {$table} ";
-	$sql .= $id === '' ? "" : "WHERE {$column}='" . db_escape($db, $id) . "' ";
+	$sql .= $query . " ";
 	$sql .= "ORDER BY position ASC";
 	$result = mysqli_query($db, $sql);
 	confirm_result_set($result);
@@ -264,4 +265,16 @@ function validate_page($page) {
   }
 
 	return $errors;
+}
+
+function construct_find_stmt($options) {
+	global $db;
+	if (empty($options)) {
+		return;
+	}
+	$stmt_array = [];
+	foreach ($options as $key => $value) {
+		$stmt_array[] = $key . "=" . "'" . db_escape($db, $value) . "'";
+	}
+	return  "WHERE " . implode(" AND ", $stmt_array);
 }

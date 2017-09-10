@@ -25,7 +25,7 @@ if(is_post_request()) {
   
 } else {
 
-  $page = find_page_by_id($id);
+  $page = find_page_by_id(['id' => $id]);
 
 
 }
@@ -88,7 +88,7 @@ include(SHARED_PATH . '/staff_header.php');
         <dt>Visible</dt>
         <dd>
           <input type="hidden" name="visible" value="0" />
-          <input type="checkbox" name="visible" value="1"<?php if($page['subject_id'] == "1") { echo " checked"; } ?> />
+          <input type="checkbox" name="visible" value="1"<?php if($page['visible'] == "1") { echo " checked"; } ?> />
         </dd>
       </dl>
       <dl>

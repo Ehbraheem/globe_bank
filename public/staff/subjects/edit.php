@@ -27,7 +27,7 @@ if (is_post_request()) {
   
 } else {
 
-  $subject = find_subject_by_id($id);
+  $subject = find_subject_by_id(['id' => $id]);
 
 }
 

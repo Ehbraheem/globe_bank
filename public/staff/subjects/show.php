@@ -6,7 +6,7 @@
 // $id = isset($_GET['id']) ? $_GET['id'] : '1';
 $id = $_GET['id'] ?? '1'; // PHP > 7.0
 
-$subject = find_subject_by_id($id);
+$subject = find_subject_by_id(['id' => $id]);
 ?>
 
 <?php $page_title = 'Show Subject'; ?>
