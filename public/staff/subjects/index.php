@@ -1,6 +1,7 @@
 <?php 
   
   $PRIVATE_PATH='../../../private/';
+  require_login();
 
   require_once $PRIVATE_PATH . 'initialize.php'; 
 

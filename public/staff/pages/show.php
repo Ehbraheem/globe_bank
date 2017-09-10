@@ -1,6 +1,7 @@
 <?php require_once('../../../private/initialize.php'); ?>
 
 <?php
+require_login();
 // $id = isset($_GET['id']) ? $_GET['id'] : '1';
 $id = $_GET['id'] ?? '1'; // PHP > 7.0
 
@@ -18,7 +19,7 @@ $page = find_page_by_id(['id' => $id]);
   <div class="page show">
 
     <div class="actions">
-      <a class="action" href="<?php echo url_for('/index.php?id=' . h(u($page['id']))) .
+      <a class="action" href="<?php echo url_for('/index.php?id=' . h(u($page['id'])) .
       '&preview=true'); ?>" target="_blank">Preview</a>
     </div>
 

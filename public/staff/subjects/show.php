@@ -1,6 +1,8 @@
 <?php $PRIVATE_PATH='../../../private/' ?>
 
-<?php require_once $PRIVATE_PATH . 'initialize.php'; ?>
+<?php require_once $PRIVATE_PATH . 'initialize.php'; 
+require_login();
+?>
 
 <?php
 // $id = isset($_GET['id']) ? $_GET['id'] : '1';

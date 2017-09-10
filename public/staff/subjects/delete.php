@@ -1,4 +1,5 @@
 <?php
+require_login();
 
 require_once('../../../private/initialize.php');
 
@@ -7,7 +8,7 @@ if(!isset($_GET['id'])) {
 }
 $id = $_GET['id'];
 
-$subject = find_subject_by_id($id);
+$subject = find_subject_by_id(["id"=>$id]);
 
 if(is_post_request()) {
   
