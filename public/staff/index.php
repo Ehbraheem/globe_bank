@@ -2,7 +2,9 @@
 
 <?php $page_title = "Staff Area"; ?>
 
-<?php require_once $PRIVATE_PATH . 'initialize.php'; ?>
+<?php require_once $PRIVATE_PATH . 'initialize.php'; 
+require_login();
+?>
 
 <?php include SHARED_PATH . '/staff_header.php'; ?>
 
@@ -11,6 +13,7 @@
 	<h2>Main Menu</h2>
 	<ul>
 		<li><a href="<?php echo url_for('/staff/subjects/index.php'); ?>">Subjects</a></li>
+		<li><a href="<?php echo url_for('/staff/admins/index.php'); ?>">Admins</a></li>
 	</ul>
 </div>
 </div>

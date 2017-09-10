@@ -2,6 +2,7 @@
 $PRIVATE_PATH='../../../private/';
 
 require_once $PRIVATE_PATH . 'initialize.php';
+require_login();
 require_once PUBLIC_PATH . '/staff/pages/form_processor.php';
 
 if(!isset($_GET['id'])) {
@@ -14,9 +15,10 @@ $id = $_GET['id'];
 if(is_post_request()) {
 
   // Handle form values sent by new.php
-  $page = make_page();
+  $page = make_page($id);
   $result = update_page($page);
   if ($result === true) {
+    $_SESSION['status'] = "The Page was updated Successfully.";
     redirect_to('/staff/pages/show.php?id=' . $id);
   } else {
     $errors = $result;
@@ -25,12 +27,12 @@ if(is_post_request()) {
   
 } else {
 
-  $page = find_page_by_id($id);
+  $page = find_page_by_id(['id' => $id]);
 
 
 }
 
-$page_count = pages_count();
+$page_count = count_pages_by_subject_id(['subject_id'=>$page['subject_id']]);
 
 $page_title = 'Edit Page';
 include(SHARED_PATH . '/staff_header.php'); 
@@ -38,7 +40,7 @@ include(SHARED_PATH . '/staff_header.php');
 
 <div id="content">
 
-  <a class="back-link" href="<?php echo url_for('/staff/pages/index.php'); ?>">&laquo; Back to List</a>
+  <a class="back-link" href="<?php echo url_for('/staff/subjects/show.php?id=' . h(u($page['subject_id']))); ?>">&laquo; Back to Subject</a>
 
   <div class="page new">
     <h1>Edit Page</h1>
@@ -88,7 +90,7 @@ include(SHARED_PATH . '/staff_header.php');
         <dt>Visible</dt>
         <dd>
           <input type="hidden" name="visible" value="0" />
-          <input type="checkbox" name="visible" value="1"<?php if($page['subject_id'] == "1") { echo " checked"; } ?> />
+          <input type="checkbox" name="visible" value="1"<?php if($page['visible'] == "1") { echo " checked"; } ?> />
         </dd>
       </dl>
       <dl>

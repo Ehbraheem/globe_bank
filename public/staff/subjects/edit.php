@@ -2,6 +2,7 @@
 $PRIVATE_PATH='../../../private/';
 
 require_once $PRIVATE_PATH . 'initialize.php';
+require_login();
 require_once PUBLIC_PATH . '/staff/subjects/form_processor.php';
 
 if(!isset($_GET['id'])) {
@@ -13,11 +14,11 @@ if (is_post_request()) {
 
   //  Handle form values sent by new.php
 
-  $subject = make_subject();
-  
+  $subject = make_subject($id);
 
   $result = update_subject($subject);
   if ($result === true) {
+    $_SESSION['status'] = "The Subject was updated Successfully.";
     redirect_to('/staff/subjects/show.php?id=' . $id);
   } else {
     $errors = $result;
@@ -27,7 +28,7 @@ if (is_post_request()) {
   
 } else {
 
-  $subject = find_subject_by_id($id);
+  $subject = find_subject_by_id(['id' => $id]);
 
 }
 

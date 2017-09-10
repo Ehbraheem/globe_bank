@@ -1,8 +1,9 @@
 <?php
 
-$PRIVATE_PATH='../../../private/';
+$PRIVATE_PATH='../../../private/';;
 
 require_once $PRIVATE_PATH . 'initialize.php'; 
+require_login();
 require_once PUBLIC_PATH . '/staff/subjects/form_processor.php';
 
 if (is_post_request()) {
@@ -15,6 +16,7 @@ if (is_post_request()) {
 
   if ($result === true) {
     $new_id = mysqli_insert_id($db);
+    $_SESSION['status'] = "The Subject was created Successfully.";
     redirect_to("/staff/subjects/show.php?id=" . $new_id);
   } else {
     $errors = $result;

@@ -92,21 +92,28 @@ function has_valid_email_format($value) {
 	return preg_match($email_regex, $value) === 1;
 }
 
-// has_unique_page_menu_name('History')
-  // * Validates uniqueness of pages.menu_name
-  // * For new records, provide only the menu_name.
+// has_unique_menu_name('History')
+  // * Validates uniqueness of $column
+  // * For new records, provide only the $column.
   // * For existing records, provide current ID as second arugment
-  //   has_unique_page_menu_name('History', 4)
-  function has_unique_menu_name($table, $menu_name, $current_id="0") {
+  function has_unique($table, $column, $menu_name, $current_id="0") {
     global $db;
 
     $sql = "SELECT * FROM {$table} ";
-    $sql .= "WHERE menu_name='" . db_escape($db, $menu_name) . "' ";
+    $sql .= "WHERE {$column}='" . db_escape($db, $menu_name) . "' ";
     $sql .= "AND id != '" . db_escape($db, $current_id) . "'";
 
-    $page_set = mysqli_query($db, $sql);
-    $page_count = mysqli_num_rows($page_set);
-    mysqli_free_result($page_set);
+    $doc_set = mysqli_query($db, $sql);
+    $doc_count = mysqli_num_rows($doc_set);
+    mysqli_free_result($doc_set);
 
-    return $page_count === 0;
+    return $doc_count === 0;
+  }
+
+  function has_unique_username($username, $current_id="0"){
+  	return has_unique("admins", "username", $username, $current_id);
+  }
+
+  function has_unique_menu_name($table, $menu_name, $current_id="0") {
+  	return has_unique($table, "menu_name", $menu_name, $current_id);
   }

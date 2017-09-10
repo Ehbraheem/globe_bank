@@ -1,7 +1,7 @@
 <?php 
 $PRIVATE_PATH='../../../private/';
-
 require_once $PRIVATE_PATH . 'initialize.php';
+require_login();
 require_once PUBLIC_PATH . '/staff/pages/form_processor.php';
 
 if(is_post_request()) {
@@ -11,6 +11,7 @@ if(is_post_request()) {
   $result = insert_page($page);
   if ($result === true) {
     $new_id = mysqli_insert_id($db);
+    $_SESSION['status'] = "The Page was created Successfully.";
     redirect_to("/staff/pages/show.php?id=" . $new_id);
   } else {
     $errors = $result;
@@ -22,13 +23,13 @@ if(is_post_request()) {
 }
 
 $page = [];
-$page['subject_id'] = '';
+$page['subject_id'] = $_GET['subject_id'] ?? '1';
 $page['menu_name'] = '';
 $page['position'] = '';
 $page['visible'] = '';
 $page['content'] = '';
 
-$page['position'] = $page_count = pages_count() + 1;
+$page['position'] = $page_count = count_pages_by_subject_id(['subject_id'=>$page['subject_id']]) + 1;
    
 $visible = '';
 
@@ -38,7 +39,7 @@ include(SHARED_PATH . '/staff_header.php');
 
 <div id="content">
 
-  <a class="back-link" href="<?php echo url_for('/staff/pages/index.php'); ?>">&laquo; Back to List</a>
+  <a class="back-link" href="<?php echo url_for('/staff/subjects/show.php?id=' . h(u($page['subject_id']))); ?>">&laquo; Back to Subject</a>
 
   <div class="page new">
     <h1>Create Page</h1>
